@@ -1,0 +1,622 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" charset="UTF-8">
+
+    <title> {% block title %} documento {% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+
+    {% block css %} {% endblock %}
+    <script type="text/javascript" src="{% static 'js/bootstrap.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <script type="text/javascript" src="{% static 'js/funciones.js' %}"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.2/css/mdb.min.css">
+
+
+</head>
+<style>
+    body {
+        background-color: transparent;
+    }
+
+    .card {
+        box-shadow: 0 0 0 0;
+    }
+
+    .card-block {
+        padding: 1.25rem;
+    }
+
+    .chart_align {
+        padding: 0 !important;
+    }
+
+    .graph {
+        height: 242px !important;
+        overflow: hidden;
+    }
+
+    #success_message {
+        display: none;
+    }
+
+    body {
+        position: relative;
+        overflow-x: hidden;
+    }
+
+    body,
+    html {
+        height: 100%;
+    }
+
+    .nav .open > a,
+    .nav .open > a:hover,
+    .nav .open > a:focus {
+        background-color: transparent;
+    }
+
+    /*-------------------------------*/
+    /*           Wrappers            */
+    /*-------------------------------*/
+
+    #wrapper {
+        padding-left: 0;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
+
+    #wrapper.toggled {
+        padding-left: 220px;
+    }
+
+    #sidebar-wrapper {
+        z-index: 1000;
+        left: 220px;
+        width: 0;
+        height: 100%;
+        margin-left: -220px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        background: #1a1a1a;
+        -webkit-transition: all 0.5s ease;
+        -moz-transition: all 0.5s ease;
+        -o-transition: all 0.5s ease;
+        transition: all 0.5s ease;
+    }
+
+    #sidebar-wrapper::-webkit-scrollbar {
+        display: none;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        width: 220px;
+    }
+
+    #page-content-wrapper {
+        width: 100%;
+        padding-top: 70px;
+    }
+
+    #wrapper.toggled #page-content-wrapper {
+        position: absolute;
+        margin-right: -20px;
+    }
+
+    /*-------------------------------*/
+    /*     Sidebar nav styles        */
+    /*-------------------------------*/
+
+    .sidebar-nav {
+        position: absolute;
+        top: 0;
+        width: 220px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .sidebar-nav li {
+        position: relative;
+        line-height: 40px;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .sidebar-nav li:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        height: 100%;
+        width: 10px;
+        background-color: #1c1c1c;
+        -webkit-transition: width .2s ease-in;
+        -moz-transition: width .2s ease-in;
+        -ms-transition: width .2s ease-in;
+        transition: width .2s ease-in;
+
+    }
+
+    .sidebar-nav li:first-child a {
+        color: #fff;
+        background-color: #1a1a1a;
+    }
+
+    .sidebar-nav li:nth-child(2):before {
+        background-color: #ec1b5a;
+    }
+
+    .sidebar-nav li:nth-child(3):before {
+        background-color: #79aefe;
+    }
+
+    .sidebar-nav li:nth-child(4):before {
+        background-color: #314190;
+    }
+
+    .sidebar-nav li:nth-child(5):before {
+        background-color: #279636;
+    }
+
+    .sidebar-nav li:nth-child(6):before {
+        background-color: #7d5d81;
+    }
+
+    .sidebar-nav li:nth-child(7):before {
+        background-color: #ead24c;
+    }
+
+    .sidebar-nav li:nth-child(8):before {
+        background-color: #2d2366;
+    }
+
+    .sidebar-nav li:nth-child(9):before {
+
+    }
+
+    .sidebar-nav li:nth-child(10):before {
+        background-color: #ec1b5a;
+    }
+
+    .sidebar-nav li:nth-child(11):before {
+        background-color: #314190;
+    }
+
+    .sidebar-nav li:nth-child(12):before {
+        background-color: #279636;
+    }
+
+    .sidebar-nav li:nth-child(13):before {
+        background-color: #7d5d81;
+    }
+
+    .sidebar-nav li:nth-child(14):before {
+        background-color: #ead24c;
+    }
+
+    .sidebar-nav li:nth-child(15):before {
+        background-color: #2d2366;
+    }
+
+    .sidebar-nav li:nth-child(16):before {
+        background-color: #35acdf;
+    }
+
+    .sidebar-nav li:hover:before,
+    .sidebar-nav li.open:hover:before {
+        width: 100%;
+        -webkit-transition: width .2s ease-in;
+        -moz-transition: width .2s ease-in;
+        -ms-transition: width .2s ease-in;
+        transition: width .2s ease-in;
+
+    }
+
+    .sidebar-nav li a {
+        display: block;
+        color: #ddd;
+        text-decoration: none;
+        padding: 10px 15px 10px 30px;
+    }
+
+    .sidebar-nav li a:hover,
+    .sidebar-nav li a:active,
+    .sidebar-nav li a:focus,
+    .sidebar-nav li.open a:hover,
+    .sidebar-nav li.open a:active,
+    .sidebar-nav li.open a:focus {
+        color: #fff;
+        text-decoration: none;
+        background-color: transparent;
+    }
+
+    .sidebar-nav > .sidebar-brand {
+        height: 65px;
+        font-size: 20px;
+        line-height: 44px;
+    }
+
+    .sidebar-nav .dropdown-menu {
+        position: relative;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+        border-radius: 0;
+        border: none;
+        background-color: #222;
+        box-shadow: none;
+    }
+
+    /*-------------------------------*/
+    /*       Hamburger-Cross         */
+    /*-------------------------------*/
+
+    .hamburger {
+        position: fixed;
+        top: 20px;
+        z-index: 999;
+        display: block;
+        width: 32px;
+        height: 32px;
+        margin-left: 15px;
+        background: transparent;
+        border: none;
+    }
+
+    .hamburger:hover,
+    .hamburger:focus,
+    .hamburger:active {
+        outline: none;
+    }
+
+    .hamburger.is-closed:before {
+        content: '';
+        display: block;
+        width: 100px;
+        font-size: 14px;
+        color: #fff;
+        line-height: 32px;
+        text-align: center;
+        opacity: 0;
+        -webkit-transform: translate3d(0, 0, 0);
+        -webkit-transition: all .35s ease-in-out;
+    }
+
+    .hamburger.is-closed:hover:before {
+        opacity: 1;
+        display: block;
+        -webkit-transform: translate3d(-100px, 0, 0);
+        -webkit-transition: all .35s ease-in-out;
+    }
+
+    .hamburger.is-closed .hamb-top,
+    .hamburger.is-closed .hamb-middle,
+    .hamburger.is-closed .hamb-bottom,
+    .hamburger.is-open .hamb-top,
+    .hamburger.is-open .hamb-middle,
+    .hamburger.is-open .hamb-bottom {
+        position: absolute;
+        left: 0;
+        height: 4px;
+        width: 100%;
+    }
+
+    .hamburger.is-closed .hamb-top,
+    .hamburger.is-closed .hamb-middle,
+    .hamburger.is-closed .hamb-bottom {
+        background-color: #1a1a1a;
+    }
+
+    .hamburger.is-closed .hamb-top {
+        top: 5px;
+        -webkit-transition: all .35s ease-in-out;
+    }
+
+    .hamburger.is-closed .hamb-middle {
+        top: 50%;
+        margin-top: -2px;
+    }
+
+    .hamburger.is-closed .hamb-bottom {
+        bottom: 5px;
+        -webkit-transition: all .35s ease-in-out;
+    }
+
+    .hamburger.is-closed:hover .hamb-top {
+        top: 0;
+        -webkit-transition: all .35s ease-in-out;
+    }
+
+    .hamburger.is-closed:hover .hamb-bottom {
+        bottom: 0;
+        -webkit-transition: all .35s ease-in-out;
+    }
+
+    .hamburger.is-open .hamb-top,
+    .hamburger.is-open .hamb-middle,
+    .hamburger.is-open .hamb-bottom {
+        background-color: #1a1a1a;
+    }
+
+    .hamburger.is-open .hamb-top,
+    .hamburger.is-open .hamb-bottom {
+        top: 50%;
+        margin-top: -2px;
+    }
+
+    .hamburger.is-open .hamb-top {
+        -webkit-transform: rotate(45deg);
+        -webkit-transition: -webkit-transform .2s cubic-bezier(.73, 1, .28, .08);
+    }
+
+    .hamburger.is-open .hamb-middle {
+        display: none;
+    }
+
+    .hamburger.is-open .hamb-bottom {
+        -webkit-transform: rotate(-45deg);
+        -webkit-transition: -webkit-transform .2s cubic-bezier(.73, 1, .28, .08);
+    }
+
+    .hamburger.is-open:before {
+        content: '';
+        display: block;
+        width: 100px;
+        font-size: 14px;
+        color: #fff;
+        line-height: 32px;
+        text-align: center;
+        opacity: 0;
+        -webkit-transform: translate3d(0, 0, 0);
+        -webkit-transition: all .35s ease-in-out;
+    }
+
+    .hamburger.is-open:hover:before {
+        opacity: 1;
+        display: block;
+        -webkit-transform: translate3d(-100px, 0, 0);
+        -webkit-transition: all .35s ease-in-out;
+    }
+
+    /*-------------------------------*/
+    /*            Overlay            */
+    /*-------------------------------*/
+
+    .overlay {
+        position: fixed;
+        display: none;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(250, 250, 250, .8);
+        z-index: 1;
+    }
+</style>
+
+<body>
+<div class="container mb-1">
+
+    <nav class="navbar navbar-fixed-bottom navbar-dark indigo">
+        <a class="navbar-brand" href="http://www.uleam.edu.ec/" target="_blank">
+            <img src="{% static 'imagenes/logo-uleam.png' %}" height="30" class="d-inline-block align-top" alt="">
+        </a>
+        <a class="navbar-brand" href="http://carreras.uleam.edu.ec/facci/" target="_blank">
+            <img style="max-width: 200px; max-height:150px" src="{% static 'imagenes/facci.png' %}" height="30"
+                 class="d-inline-block align-top" alt="">
+        </a>
+
+        <a class="navbar-brand" href="#">Técnicas De Simulación</a>
+        <a class="navbar-brand" href="#"></a>
+        <a class="navbar-brand" href="#"></a>
+
+        <span class="navbar-text white-text">
+            Docente:
+        </span>
+        <a class="navbar-brand" href="#">Ing. Jorge Moya</a>
+        <a class="navbar-brand" href="#"></a>
+        <a class="navbar-brand" href="#"></a>
+
+        <span class="navbar-text white-text">
+            Dessarrollado por:
+        </span>
+        <a class="navbar-brand">Cristóbal Andrés Sánchez Cobeña , 8vo Nivel "A"</a>
+
+    </nav>
+
+</div>
+{#fixed#}
+
+
+<!--Main layout-->
+<main>
+
+    <div class="container-fluid">
+
+        <div id="wrapper">
+
+
+            <!-- Sidebar -->
+            <nav class="navbar navbar-inverse  navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+
+                <ul class="nav sidebar-nav">
+                    <li class="sidebar-brand">
+                        <a href="#">
+                            Técnicas de Simulación
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/">Inicio</a>
+                    </li>
+                    <span class="navbar-text white-text">
+                        Aleatorios:
+                    </span>
+                    <li>
+                        <a href="/montecarlo">Montecarlo</a>
+                    </li>
+                    <li>
+                        <a href="/aleatorios">Números Aleatorios</a>
+                    </li>
+                    <span class="navbar-text white-text">
+                        Simulaciones:
+                    </span>
+                    <li>
+                        <a href="/inventario">Simulación Inventario</a>
+                    </li>
+                    <li>
+                        <a href="/espera">Simulación Linea de Espera</a>
+                    </li>
+                    <span class="navbar-text white-text">
+                        Caso de Estudio:
+                    </span>
+                    <li>
+                        <a href="/celltunning">Caso de Estudio Cell Tunning</a>
+                    </li>
+
+                    <span class="navbar-text white-text">
+                        Manuales:
+                    </span>
+                    <li>
+                        <a href="\static\pdf\ManualTécnico-Simulacion.pdf" target="_blank">Manual Técnico</a>
+                    </li>
+                    <li>
+                        <a href="\static\pdf\manualUsuario-CasoEstudio.pdf" target="_blank">Manual de Usuario</a>
+                    </li>
+                    <li>
+                        <a href="\static\pdf\CasoEstudio_Cell-Tuning.pdf" target="_blank">Documento Caso de Estudio</a>
+                    </li>
+                    <br><br>
+                    <li style="background: #6b54d3">
+                    <a></a></li>
+                    <br><br>
+                     <li>
+                        <a>
+                            <span> Docente:</span>
+                            <h3> Ing. Jorge Moya</h3>
+                        </a>
+                    </li>
+                                        <br><br><br><br>
+
+                    <li>
+                        <a>
+                            <span> Desarrollado por:</span>
+                            <h3> Sánchez Cobeña Cristóbal Andrés</h3>
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <span> 8vo Nivel "A"</span>
+                        </a>
+                    </li>
+
+
+                </ul>
+
+            </nav>
+            <!-- /#sidebar-wrapper -->
+
+            <!-- Page Content -->
+            <div id="page-content-wrapper">
+
+                <button type="button" class="hamburger is-closed" data-toggle="offcanvas">
+                    <span class="hamb-top"></span>
+                    <span class="hamb-middle"></span>
+                    <span class="hamb-bottom"></span>
+                </button>
+                <div class="row">
+                    <div class="col" style="float: right">
+                        <img style="max-width: 250px; max-height: 230px" src="{% static 'imagenes/facci.png' %}">
+                    </div>
+                    <div class="col" style="float: right">
+                        <img style="max-width: 100px; max-height:150px" src="{% static 'imagenes/logo-uleam.png' %}">
+
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        {% block header %}
+
+                        {% endblock %}
+                        {% block content %}
+
+                        {% endblock %}
+                    </div>
+                </div>
+            </div>
+            <!-- /#page-content-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+
+    </div>
+</main>
+<br><br><br><br><br><br><br>
+<br>
+{% block footer %}
+
+{% endblock %}
+{% block js %} {% endblock %}
+<script src="{% static 'js/jquery-1.11.2.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/valid.js' %}"></script>
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.4.5/js/bootstrapvalidator.min.js'></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.2/js/mdb.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var trigger = $('.hamburger'),
+            overlay = $('.overlay'),
+            isClosed = false;
+
+        trigger.click(function () {
+            hamburger_cross();
+        });
+
+        function hamburger_cross() {
+
+            if (isClosed == true) {
+                overlay.hide();
+                trigger.removeClass('is-open');
+                trigger.addClass('is-closed');
+                isClosed = false;
+            } else {
+                overlay.show();
+                trigger.removeClass('is-closed');
+                trigger.addClass('is-open');
+                isClosed = true;
+            }
+        }
+
+        $('ul li a').click(function () {
+            $('li a').removeClass("active");
+            $(this).addClass("active");
+        });
+
+        $('[data-toggle="offcanvas"]').click(function () {
+            $('#wrapper').toggleClass('toggled');
+
+
+        });
+    });
+</script>
+</body>
+</html>
